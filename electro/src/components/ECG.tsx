@@ -27,9 +27,20 @@ const ECGChart: React.FC = () => {
     ],
   });
   useEffect(() => {
+    let t = 0;
     const generateECGPoint = (): number => {
-      const randomValue = Math.sin(Math.random() * 2 * Math.PI);
-      return randomValue > 0.7 ? 1 : randomValue < -0.7 ? -1 : randomValue;
+      const pWave = 0.2 * Math.sin(2 * Math.PI * (t % 1.5));
+      const qrsComplex =
+        -1 * Math.exp(-Math.pow((t % 1) - 0.3, 2) / 0.01) +
+        1.5 * Math.exp(-Math.pow((t % 1) - 0.5, 2) / 0.005) -
+        1 * Math.exp(-Math.pow((t % 1) - 0.7, 2) / 0.01);
+      const tWave = 0.3 * Math.sin(2 * Math.PI * ((t + 0.5) % 2));
+
+      const ecgPoint = pWave + qrsComplex + tWave;
+
+      t += 0.05;
+
+      return ecgPoint;
     };
 
     const interval = setInterval(() => {

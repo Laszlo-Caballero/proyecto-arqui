@@ -34,7 +34,6 @@ const Oxchart: React.FC = () => {
       return Math.sin(x) * 0.5 + Math.sin(x * 0.5) * 0.3;
     };
 
-    // Intervalo para actualizar los datos del gráfico
     const interval = setInterval(() => {
       setData((prevData) => {
         const newData = [...(prevData.datasets[0].data as number[])];
