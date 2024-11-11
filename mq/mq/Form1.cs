@@ -30,11 +30,11 @@ namespace mq
             string topic = e.PublishMessage.Topic;
             string message = e.PublishMessage.PayloadAsString;
 
-            if (topic == "topico1")
+            if (topic == "pulso")
                 this.Invoke(new Action(() => lblCardiaco.Text = message));
-            else if (topic == "topico2")
+            else if (topic == "presion")
                 this.Invoke(new Action(() => lblPresion.Text = message));
-            else if (topic == "topico3")
+            else if (topic == "oxigeno")
                 this.Invoke(new Action(() => lblOxigeno.Text = message));
         }
         private async void btnConect_Click(object sender, EventArgs e)
@@ -57,9 +57,9 @@ namespace mq
 
             // Configure the subscriptions we want and subscribe
             var builder = new SubscribeOptionsBuilder();
-            builder.WithSubscription("topico1", QualityOfService.AtLeastOnceDelivery)
-                   .WithSubscription("topico2", QualityOfService.ExactlyOnceDelivery)
-                   .WithSubscription("topico3", QualityOfService.AtLeastOnceDelivery);
+            builder.WithSubscription("pulso", QualityOfService.AtLeastOnceDelivery)
+                   .WithSubscription("presion", QualityOfService.ExactlyOnceDelivery)
+                   .WithSubscription("oxigeno", QualityOfService.AtLeastOnceDelivery);
             var subscribeOptions = builder.Build();
             var subscribeResult = await client.SubscribeAsync(subscribeOptions);
         }
@@ -68,9 +68,9 @@ namespace mq
         {
             //var publishResult1 = await client.PublishAsync("topico1", "Hello 1");
             //var publishResult2 = await client.PublishAsync("topico2", "Hello 2");
-            var publishResult1 = await client.PublishAsync("topico1", lblCardiaco.Text);
-            var publishResult2 = await client.PublishAsync("topico2", lblPresion.Text);
-            var publishResult3 = await client.PublishAsync("topico3", lblOxigeno.Text);
+            var publishResult1 = await client.PublishAsync("pulso", lblCardiaco.Text);
+            var publishResult2 = await client.PublishAsync("presion", lblPresion.Text);
+            var publishResult3 = await client.PublishAsync("oxigeno", lblOxigeno.Text);
         }
 
         private void pbECG_Paint(object sender, PaintEventArgs e)
