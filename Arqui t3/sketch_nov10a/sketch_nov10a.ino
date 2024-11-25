@@ -15,6 +15,8 @@ const char* topic_pulso = "pulso";
 const char* topic_presion = "presion";
 const char* topic_oxigeno = "oxigeno";
 
+bool estado = true;
+
 
 // Definición de los canales a util
 
@@ -78,12 +80,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Mensaje recibido en el canal: ");
   Serial.println(topic);
 
-  if(strcmp(topic, topic_pulso) == 0){
+if(strcmp(topic, topic_pulso) == 0){
     int pulso = analogRead(36)
     client.publish(topic_pulso,String(pulso).c_str(), true);
   }
    if(strcmp(topic, topic_presion) == 0){
-    int valor = analogRead(35);
+    int valor = analogRead(32);
     Serial.println(valor);
     if(valor >= 614){
       int pulso = round((200*valor)/4095);
@@ -104,7 +106,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 
     delay(2000);
+    tone(4,1050,250);
 
+    if(estado){
+      digitalWrite(26, true);
+    }
+    else{
+      digitalWrite(26, false);
+    }
+    estado=!estado;
 }
 
 void reconnect() {
@@ -125,9 +135,10 @@ void reconnect() {
 }
 
 void setup() {
+  pinMode(33, ANALOG);
   pinMode(32, ANALOG);
-  pinMode(34, ANALOG);
-  pinMode(35, ANALOG);
+  pinMode(36, ANALOG);
+  pinMode(26, OUTPUT);
   Serial.begin(9600);
   setup_wifi();
   espClient.setCACert(root_ca);
@@ -140,4 +151,4 @@ void loop() {
     reconnect();
   }
   client.loop();
-}
+} 
