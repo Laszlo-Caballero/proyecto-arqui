@@ -79,14 +79,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(topic);
 
   if(strcmp(topic, topic_pulso) == 0){
-    int valor = analogRead(32);
-    Serial.println(valor);
-    if(valor >= 273){
-      int pulso = round((300*valor)/4095);
-      client.publish(topic_pulso,String(pulso).c_str(), true);
-    }else{
-      client.publish(topic_pulso, String(0).c_str(), true);
-    }
+    int pulso = analogRead(36)
+    client.publish(topic_pulso,String(pulso).c_str(), true);
   }
    if(strcmp(topic, topic_presion) == 0){
     int valor = analogRead(35);

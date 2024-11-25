@@ -20,7 +20,6 @@ export function initializeSocket(server: Server) {
   client.subscribe("oxigeno");
 
   client.on("message", (topic, message) => {
-    console.log(message.toString());
     if (topic === "pulso") {
       io.emit("pulso", message.toString());
     }
